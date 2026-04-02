@@ -1,26 +1,81 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import * as fs from 'fs';
+import * as path from 'path';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+interface ScriptConfig {
+	id: string;
+	title: string;
+	scriptPath: string;
+	description: string;
+	runInTerminal: boolean;
+}
+
+interface ScriptsConfig {
+	scripts: ScriptConfig[];
+}
+
+function loadScriptsConfig(extensionPath: string): ScriptConfig[] {
+	const configPath = path.join(extensionPath, 'scripts-config.json');
+	try {
+		const content = fs.readFileSync(configPath, 'utf-8');
+		const config: ScriptsConfig = JSON.parse(content);
+		return config.scripts || [];
+	} catch (error) {
+		vscode.window.showErrorMessage(`Failed to load scripts-config.json: ${error}`);
+		return [];
+	}
+}
+
+function executeScriptInTerminal(script: ScriptConfig, extensionPath: string) {
+	const fullPath = path.join(extensionPath, script.scriptPath);
+	const terminal = vscode.window.createTerminal({
+		name: script.title,
+		shellPath: '/bin/bash',
+		shellArgs: [fullPath]
+	});
+	terminal.show();
+}
+
+function executeScriptDirect(script: ScriptConfig) {
+	vscode.window.showInformationMessage(script.description);
+}
+
 export function activate(context: vscode.ExtensionContext) {
+	const scripts = loadScriptsConfig(context.extensionPath);
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "lazy-aosp-build-helper" is now active!');
+	const disposable = vscode.commands.registerCommand('lazy-aosp-build-helper.showScripts', async () => {
+		if (scripts.length === 0) {
+			vscode.window.showInformationMessage('No scripts configured.');
+			return;
+		}
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('lazy-aosp-build-helper.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from lazy_aosp_build_helper!');
+		const items: vscode.QuickPickItem[] = scripts.map(script => ({
+			label: script.title,
+			description: script.description,
+			detail: script.scriptPath || '(no script)'
+		}));
+
+		const selected = await vscode.window.showQuickPick(items, {
+			placeHolder: 'Select a script to run'
+		});
+
+		if (!selected) {
+			return;
+		}
+
+		const script = scripts.find(s => s.title === selected.label);
+		if (!script) {
+			return;
+		}
+
+		if (script.runInTerminal) {
+			executeScriptInTerminal(script, context.extensionPath);
+		} else {
+			executeScriptDirect(script);
+		}
 	});
 
 	context.subscriptions.push(disposable);
 }
 
-// This method is called when your extension is deactivated
 export function deactivate() {}
