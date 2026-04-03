@@ -5,14 +5,26 @@
       "title": "Build AOSP",
       "scriptPath": "scripts/build.sh",
       "description": "构建AOSP项目",
-      "runInTerminal": true
+      "runInTerminal": true,
+      "reuseTerminal": true
     },
     {
       "id": "sync",
       "title": "Sync Code",
       "scriptPath": "scripts/sync.sh",
       "description": "同步代码仓库",
-      "runInTerminal": true
+      "runInTerminal": true,
+      "terminalName": "AOSP Build"
+    },
+    {
+      "id": "make",
+      "title": "make module",
+      "scriptPath": "scripts/make.sh",
+      "description": "同步代码仓库",
+      "runInTerminal": true,
+      "terminalName": "AOSP Build",
+      "initCommand": "echo 'init make env'"
+
     },
     {
       "id": "hello",
@@ -20,13 +32,6 @@
       "scriptPath": "",
       "description": "测试命令",
       "runInTerminal": false
-    },
-    {
-      "id": "hello terminal",
-      "title": "Hello World in terminal",
-      "scriptPath": "",
-      "description": "测试命令 终端版",
-      "runInTerminal": true
     }
   ]
 }
