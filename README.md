@@ -2,6 +2,14 @@
 
 A VSCode extension for managing and executing predefined shell scripts through a command palette interface.
 
+## ⚠️ Manual Configuration Required
+
+This extension requires manual configuration. You need to:
+1. Add your shell scripts to the `scripts/` directory
+2. Configure scripts in `scripts-config.json`
+
+After configuration, access scripts via `Cmd+Shift+P` → "Show Scripts".
+
 ## Features
 
 - **Command Palette Integration** - Execute scripts via `Cmd+Shift+P` → "Show Scripts"

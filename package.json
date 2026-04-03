@@ -1,7 +1,7 @@
 {
   "name": "lazy-aosp-build-helper",
   "displayName": "lazy_aosp_build_helper",
-  "description": "To help us operate repositories by defined sh scrpts,  for example, source lunch make cd repository path etc.",
+  "description": "通过命令面板快速执行预定义的 shell 脚本（需手动配置 scripts-config.json）",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.0.0"

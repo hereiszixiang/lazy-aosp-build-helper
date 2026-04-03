@@ -2,6 +2,14 @@
 
 一款 VSCode 插件，通过命令面板界面管理和执行预定义的 shell 脚本。
 
+## ⚠️ 需要手动配置
+
+使用此插件需要手动配置：
+1. 将你的 shell 脚本添加到 `scripts/` 目录
+2. 在 `scripts-config.json` 中配置脚本
+
+配置完成后，通过 `Cmd+Shift+P` → "Show Scripts" 访问脚本。
+
 ## 功能特性
 
 - **命令面板集成** - 通过 `Cmd+Shift+P` → "Show Scripts" 执行脚本
