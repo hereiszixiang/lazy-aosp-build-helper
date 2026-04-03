@@ -11,6 +11,7 @@ interface ScriptConfig {
 	reuseTerminal?: boolean;
 	terminalName?: string;
 	initCommand?: string;
+	preCommand?: string;
 }
 
 interface ScriptsConfig {
@@ -76,6 +77,9 @@ function executeScriptInTerminal(script: ScriptConfig, extensionPath: string) {
 			shellPath: '/bin/bash',
 			shellArgs: ['-i']
 		});
+	}
+	if (script.preCommand) {
+		terminal.sendText(script.preCommand);
 	}
 	terminal.sendText(`bash "${fullPath}"`);
 	terminal.show();

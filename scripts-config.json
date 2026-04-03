@@ -20,11 +20,11 @@
       "id": "make",
       "title": "make module",
       "scriptPath": "scripts/make.sh",
-      "description": "同步代码仓库",
+      "description": "构建指定模块",
       "runInTerminal": true,
       "terminalName": "AOSP Build",
-      "initCommand": "echo 'init make env'"
-
+      "initCommand": "echo 'init make env'",
+      "preCommand": "echo 'pre make env'"
     },
     {
       "id": "hello",
